@@ -22,6 +22,7 @@
     <div>
       战局：{{result == null ? "激战正酣" : `胜利方为${result}`}}
     </div>
+    <div  v-if="finished" class="gameOver">游戏结束</div>
   </div>
  
   <!-- <div>
@@ -44,7 +45,8 @@ export default{
       [null,null,null],
       [null,null,null],
       ],
-      result: null
+      result: null,
+      finished: false
       }
   },
   methods: {
@@ -55,26 +57,34 @@ export default{
       this.tell()
     },
     // 判断输赢
-    tell(){
+    tell(cells){
       const map = this.map
       // 横向
-      for(let i = 0; i < 2; i++){
+      for(let i = 0; i < 3; i++){
         if(map[i][0] != null && map[i][0] == map[i][1] && map[i][1] == map[i][2]){
           this.result = map[i][0]
+          this.finished = true
+          break
         }
       }
       // 竖向
-      for(let j=0; j<2; j++){
+      for(let j=0; j<3; j++){
         if(map[0][j] != null && map[0][j] == map[1][j] && map[1][j] == map[2][j]){
           this.result = map[0][j]
+          this.finished = true
+          break
         }
       }
       // 斜向
       if(map[0][0] != null && map[0][0] == map[1][1] && map[1][1] == map[2][2]){
         this.result = map[0][0]
+        this.finished = true
+          
       }
       if(map[0][2] != null && map[0][2] == map[1][1] && map[1][1] == map[2][0]){
         this.result = map[0][2]
+        this.finished = true
+        
       }
     }
   }
@@ -90,5 +100,18 @@ export default{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.gameOver{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    color: white;
 }
 </style>
